@@ -1,8 +1,7 @@
 import os
 import json
 import base64
-import datetime as DateTimeLibrary
-from flask import Flask, url_for, render_template, session, request, redirect, abort, Markup, send_from_directory
+from flask import Flask, render_template, request, send_from_directory
 from werkzeug.exceptions import HTTPException
 from mytonlib.adnl import AdnlUdpClient
 
@@ -32,6 +31,12 @@ def adnl_check():
 		message = f'host: {host}, port: {port}, pubkey: {pubkey}, error: {ex}'
 		result = {'ok': False, 'message': message}
 	return json.dumps(result, indent=4)
+#end define
+
+@app.errorhandler(HTTPException)
+def handle_exception(error):
+	title_text = f"{error.code} {error.name}"
+	return render_template("error_page.html", title_text=title_text, error_code=error.code, error_name=error.name, error_description=error.description), error.code
 #end define
 
 if __name__ == "__main__":
