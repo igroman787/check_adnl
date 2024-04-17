@@ -1,0 +1,15 @@
+[Unit]
+Description = fron service. Created by https://github.com/igroman787/mypylib.
+After = network.target
+
+[Service]
+Type = simple
+Restart = always
+RestartSec = 30
+ExecStart = /usr/bin/python3 /home/front/www/check_adnl/run.py
+ExecStopPost = /bin/echo service down
+User = front
+Group = front 
+
+[Install]
+WantedBy = multi-user.target
