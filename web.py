@@ -3,7 +3,7 @@ import json
 import base64
 from flask import Flask, render_template, request, send_from_directory
 from werkzeug.exceptions import HTTPException
-from mytonlib.adnl import AdnlUdpClient
+from mytonlib.mytonlib.adnl import AdnlUdpClient
 
 
 app = Flask(__name__)
@@ -25,8 +25,11 @@ def adnl_check():
 	pubkey = request.form.get("pubkey") or request.json.get("pubkey")
 	try: 
 		adnl = AdnlUdpClient()
-		adnl.connect(host, int(port), pubkey)
-		result = {'ok': True, 'message': ''}
+		ok = adnl.ping(host, int(port), pubkey)
+		if ok == True:
+			result = {'ok': True, 'message': ''}
+		else:
+			result = {'ok': False, 'message': 'timed out'}
 	except Exception as ex:
 		message = f'host: {host}, port: {port}, pubkey: {pubkey}, error: {ex}'
 		result = {'ok': False, 'message': message}

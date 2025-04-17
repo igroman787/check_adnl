@@ -1,0 +1,3 @@
+[submodule "mytonlib"]
+	path = mytonlib
+	url = https://github.com/igroman787/mytonlib
